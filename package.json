@@ -48,5 +48,5 @@
     "workerDirectory": "public"
   },
   "proxy": "http://localhost:3000",
-  "homepage": "."
+  "homepage": "/"
 }
