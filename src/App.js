@@ -24,7 +24,7 @@ const appRouter = createBrowserRouter(
     </Route>
   ),
   {
-    basename: "/adopt-a-pet",
+    basename: "/",
   }
 );
 
