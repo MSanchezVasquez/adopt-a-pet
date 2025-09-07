@@ -29,6 +29,5 @@ export const getPetTypes = async () => {
   });
 
   const json = await response.json();
-
   return json;
 };
