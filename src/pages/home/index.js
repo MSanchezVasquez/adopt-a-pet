@@ -20,42 +20,50 @@ const HomePage = () => {
     getPetsData();
   }, [type]);
 
-  if (!data) {
-    return <h2>Loading...</h2>;
-  }
+  // NOTA: Eliminamos el "if (!data) return Loading" que bloqueaba toda la página
 
   return (
     <div className="page">
+      {/* 1. HERO INMEDIATO: Se renderiza YA, sin esperar a la API */}
       <Hero />
+
       <h3>
         <span className="pet-type-label">{type ? `${type}s` : "Pets"}</span>{" "}
         available for adoption near you
       </h3>
 
-      {data.length ? (
+      {/* 2. CARGA LOCALIZADA: Solo esperamos datos para la rejilla */}
+      {!data ? (
+        <h2 style={{ textAlign: "center", padding: "2rem" }}>
+          Loading pets...
+        </h2>
+      ) : data.length ? (
         <div className="grid">
-          {data.map((animal) => (
-            <Link // Change me to a Link!
+          {data.map((animal, index) => (
+            <Link
               key={animal.id}
               to={`/${animal.type.toLowerCase()}/${animal.id}`}
               className="pet"
             >
               <article>
                 <div className="pet-image-container">
-                  {
-                    <img
-                      className="pet-image"
-                      src={animal.photos[0]?.medium || "/missing-animal.png"}
-                      alt=""
-                    />
-                  }
+                  <img
+                    className="pet-image"
+                    src={animal.photos[0]?.medium || "/missing-animal.png"}
+                    alt={`Foto de ${animal.name}`}
+                    /* TUS OPTIMIZACIONES PREVIAS */
+                    width="300"
+                    height="300"
+                    loading={index < 4 ? "eager" : "lazy"}
+                    decoding="async"
+                  />
                 </div>
                 <h3>{animal.name}</h3>
                 <p>Breed: {animal.breeds.primary}</p>
                 <p>Color: {animal.colors.primary}</p>
                 <p>Gender: {animal.gender}</p>
               </article>
-            </Link> // Don't forget to change me!
+            </Link>
           ))}
         </div>
       ) : (
